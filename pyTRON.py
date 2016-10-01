@@ -5,53 +5,76 @@ import numpy as np
 # Windows specific:
 import msvcrt
 
-COURT_WIDTH = 100
-COURT_HEIGHT = 20
-
-# Height, Width
-COURT = []
-
-# Build the court
-for i in range(COURT_HEIGHT):
-	COURT_ROW = []
-	for k in range(COURT_WIDTH):
-		if i == 0:
-			COURT_ROW.append('-')
-		elif i == COURT_HEIGHT-1:
-			COURT_ROW.append('-')
-		elif k == 0 and i != 0:
-			COURT_ROW.append('|')
-		elif k == COURT_WIDTH-1:
-			COURT_ROW.append('|')
-		else:
-			COURT_ROW.append(' ') 
-	if len(COURT_ROW) > 0:
-		COURT.append(COURT_ROW)
-
-def showCourt(court):
-	cls()
-	# Print the court
-	for i in range(COURT_HEIGHT):
-		# For the newline
-		print ''
-		for k in range(COURT_WIDTH):
-			sys.stdout.write(court[i][k])
-			sys.stdout.flush()
-
-
 # Clears the console's screen
 def cls():
 	os.system('cls' if os.name=='nt' else 'clear')
 
-# Show court for first time
-# showCourt(COURT)
+# Asks whether a key has been acquired
+def kbfunc():
+	#this is boolean for whether the keyboard has bene hit
+	x = msvcrt.kbhit()
+	if x:
+		#getch acquires the character encoded in binary ASCII
+		ret = msvcrt.getch()
+	else:
+		ret = False
+	return ret
 
-def generateRandomPosition():
-	x, y = np.random.randint(1,COURT_WIDTH-2), np.random.randint(1,COURT_HEIGHT-2)
-	return (x,y)
 
-def buildOnCourt(x,y,char):
-	COURT[y][x] = char
+class Court():
+
+	def __init__(self, width, height):
+		self.court_width = width
+		self.court_height = height
+		self.court = []
+		self.build()
+
+	def build(self):
+		# Build the court
+		for i in range(self.court_height):
+			court_row = []
+			for k in range(self.court_width):
+				if i == 0:
+					court_row.append('-')
+				elif i == self.court_height-1:
+					court_row.append('-')
+				elif k == 0 and i != 0:
+					court_row.append('|')
+				elif k == self.court_width-1:
+					court_row.append('|')
+				else:
+					court_row.append(' ') 
+			if len(court_row) > 0:
+				self.court.append(court_row)
+
+	def printCourt(self):
+		cls()
+		# Print the court
+		for i in range(self.court_height):
+			# For the newline
+			print ''
+			for k in range(self.court_width):
+				sys.stdout.write(self.court[i][k])
+				sys.stdout.flush()
+
+	def buildOnCourt(self, x, y, char):
+		self.court[y][x] = char
+
+	def drawPlayers(self, players, playerCharacters):
+		# Check if we has the same number of players as characters
+		if len(players) != len(playerCharacters):
+			print "ERROR with drawPlayers"
+		else:
+			# i is the index in the players array
+			for i, player in enumerate(players):
+				for pos in player.getPositions():
+					self.buildOnCourt(pos[0], pos[1], playerCharacters[i])
+
+	def generateRandomPositionOnCourt(self):
+		x, y = np.random.randint(1,self.court_width-2), np.random.randint(1,self.court_height-2)
+		return (x,y)
+
+
 
 
 class Player():
@@ -104,33 +127,9 @@ class Player():
 			return False
 
 
+court = Court(100, 20)
 
-# asks whether a key has been acquired
-def kbfunc():
-	#this is boolean for whether the keyboard has bene hit
-	x = msvcrt.kbhit()
-	if x:
-		#getch acquires the character encoded in binary ASCII
-		ret = msvcrt.getch()
-	else:
-		ret = False
-	return ret
-
-
-def drawPlayersOnCourt(players, playerCharacters):
-	# Check if we has the same number of players as characters
-	if len(players) != len(playerCharacters):
-		print "ERROR with drawPlayersOnCourt"
-		sys.exit(1)
-	else:
-		# i is the index in the players array
-		for i, player in enumerate(players):
-			for pos in player.getPositions():
-				buildOnCourt(pos[0], pos[1], playerCharacters[i])
-
-
-
-player_one_start_pos = generateRandomPosition()
+player_one_start_pos = court.generateRandomPositionOnCourt()
 player_one = Player()
 player_one.storePosition(player_one_start_pos)
 
@@ -166,6 +165,5 @@ while True:
 	if is_player_one_moved == False:
 		sys.exit(0)
 
-	drawPlayersOnCourt([player_one], ['w'])
-
-	showCourt(COURT)
+	court.drawPlayers([player_one], ['w'])
+	court.printCourt()
