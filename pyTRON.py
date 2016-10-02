@@ -62,15 +62,12 @@ class Court():
 		self.court[y][x] = char
 
 	# Draw the players with their given character
-	def drawPlayers(self, players, playerCharacters):
-		# Check if we has the same number of players as characters
-		if len(players) != len(playerCharacters):
-			print "ERROR with drawPlayers"
-		else:
-			# i is the index in the players array
-			for i, player in enumerate(players):
-				for pos in player.getPositions():
-					self.buildOnCourt(pos[0], pos[1], playerCharacters[i])
+	def drawPlayers(self, players):
+		# i is the index in the players array
+		for i, player in enumerate(players):
+			playerCharacter = player.getCharacter()
+			for pos in player.getPositions():
+				self.buildOnCourt(pos[0], pos[1], playerCharacter)
 
 	# Generate a random position within the court
 	def generateRandomPositionOnCourt(self):
@@ -153,16 +150,38 @@ class Player():
 			return False
 
 
+
+def ControllPlayer(keyPressed, player, inputChars):
+	left, right, up, down = inputChars
+	# LEFT
+	if keyPressed != False and keyPressed.decode() == left and player.getcurrentDirection() != 1:
+		player.changeDirection(0)
+		# You can use:  player_one.changeDirection(player_one.translateDirection('left')) too
+	# RIGHT
+	elif keyPressed != False and keyPressed.decode() == right and player.getcurrentDirection() != 0:
+		player.changeDirection(1)
+	# UP
+	elif keyPressed != False and keyPressed.decode() == up and player.getcurrentDirection() != 3:
+		player.changeDirection(2)
+	# DOWN
+	elif keyPressed != False and keyPressed.decode() == down and player.getcurrentDirection() != 2:
+		player.changeDirection(3)
+
+
 # Create a new court
-court = Court(50, 10)
+court = Court(100, 20)
 
 # Create a player
 player_one_start_pos = court.generateRandomPositionOnCourt()
 player_one = Player(playerCharacter='x')
 player_one.storePosition(player_one_start_pos)
 
+# Create a player
+player_two_start_pos = court.generateRandomPositionOnCourt()
+player_two = Player(playerCharacter='o')
+player_two.storePosition(player_two_start_pos)
 
-fps = 10
+fps = 30
 time_delta = 1./fps
 
 while True:
@@ -172,21 +191,12 @@ while True:
 
 	# Detect key hits
 	keyPressed = kbfunc()
+	if keyPressed != False:
+		# Change player directions if necessary
+		ControllPlayer(keyPressed, player_one, ('a', 'd', 'w', 's'))
+		ControllPlayer(keyPressed, player_two, ('j', 'l', 'i', 'k'))
 
-	# LEFT
-	if keyPressed != False and keyPressed.decode() == 'a' and player_one.getcurrentDirection() != 1:
-		player_one.changeDirection(0)
-		# You can use:  player_one.changeDirection(player_one.translateDirection('left')) too
-	# RIGHT
-	elif keyPressed != False and keyPressed.decode() == 'd' and player_one.getcurrentDirection() != 0:
-		player_one.changeDirection(1)
-	# UP
-	elif keyPressed != False and keyPressed.decode() == 'w' and player_one.getcurrentDirection() != 3:
-		player_one.changeDirection(2)
-	# DOWN
-	elif keyPressed != False and keyPressed.decode() == 's' and player_one.getcurrentDirection() != 2:
-		player_one.changeDirection(3)
-	
+	####### Player One ########
 
 	# Move the player in the given direction
 	is_player_one_moved = player_one.moveOneStep()
@@ -199,6 +209,21 @@ while True:
 		print "\nWALL COLLISION"
 		sys.exit()
 
-	court.drawPlayers([player_one], [player_one.getCharacter()])
-	
+
+	####### Player Two ########
+
+	is_player_two_moved = player_two.moveOneStep()
+
+	if is_player_two_moved == False:
+		print "\nSELF COLLISION"
+		sys.exit(0)
+
+	if player_two.detectCourtCollision(court):
+		print "\nWALL COLLISION"
+		sys.exit()
+
+
+
+	# Show the court and players
+	court.drawPlayers([player_one, player_two])
 	court.printCourt()
