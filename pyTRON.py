@@ -51,13 +51,11 @@ class Court():
 	# Print the court on the console
 	def printCourt(self):
 		cls()
+		# Prepare a string that represents the court
+		screen = "\n".join(''.join(line) for line in self.court)
 		# Print the court
-		for i in range(self.court_height):
-			# For the newline
-			print ''
-			for k in range(self.court_width):
-				sys.stdout.write(self.court[i][k])
-				sys.stdout.flush()
+		sys.stdout.write(screen)
+		sys.stdout.flush()
 
 	# Put a character somewhere in the court
 	def buildOnCourt(self, x, y, char):
@@ -140,7 +138,7 @@ player_one = Player()
 player_one.storePosition(player_one_start_pos)
 
 
-fps = 30
+fps = 2
 time_delta = 1./fps
 
 while True:
