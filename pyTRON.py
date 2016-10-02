@@ -11,10 +11,8 @@ def cls():
 
 # Asks whether a key has been acquired
 def kbfunc():
-	#this is boolean for whether the keyboard has bene hit
 	x = msvcrt.kbhit()
 	if x:
-		#getch acquires the character encoded in binary ASCII
 		ret = msvcrt.getch()
 	else:
 		ret = False
