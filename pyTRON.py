@@ -2,7 +2,7 @@ import time
 import os
 import sys
 import numpy as np
-# Windows specific:
+# Windows OS specific:
 import msvcrt
 
 # Clears the console's screen
@@ -77,16 +77,26 @@ class Court():
 		x, y = np.random.randint(1,self.court_width-2), np.random.randint(1,self.court_height-2)
 		return (x,y)
 
+	def getCourtArray(self):
+		return self.court
+
+	def getWidthHeight(self):
+		return (self.court_width, self.court_height)
+
 
 class Player():
 
-	def __init__(self, currDir = 0):
+	def __init__(self, currDir = 0, playerCharacter = 'o'):
 		self.currDir = currDir
 		self.positions = []
+		self.playerCharacter = playerCharacter
 
 	# Stores the given (x,y) positions in an array
 	def storePosition(self, position):
 		self.positions.append(position)
+
+	def getCharacter(self):
+		return self.playerCharacter
 
 	# Returns the position array where we can see the players positions
 	def getPositions(self):
@@ -129,16 +139,30 @@ class Player():
 		else:
 			return False
 
+	def detectCourtCollision(self, court):
+		# (x,y)
+		lastPosition = self.positions[-1]
+		# (width,height)
+		(w,h) = court.getWidthHeight()
+
+		if (lastPosition[0] >= w-1) or (lastPosition[0] <= 0):
+			return True
+		elif (lastPosition[1] >= h-1) or (lastPosition[1] <= 0):
+			return True
+		else:
+			return False
+
+
 # Create a new court
-court = Court(100, 20)
+court = Court(50, 10)
 
 # Create a player
 player_one_start_pos = court.generateRandomPositionOnCourt()
-player_one = Player()
+player_one = Player(playerCharacter='x')
 player_one.storePosition(player_one_start_pos)
 
 
-fps = 2
+fps = 10
 time_delta = 1./fps
 
 while True:
@@ -163,11 +187,18 @@ while True:
 	elif keyPressed != False and keyPressed.decode() == 's' and player_one.getcurrentDirection() != 2:
 		player_one.changeDirection(3)
 	
+
 	# Move the player in the given direction
 	is_player_one_moved = player_one.moveOneStep()
 	# If we couldn't move our player than that's the end of the game
 	if is_player_one_moved == False:
+		print "\nSELF COLLISION"
 		sys.exit(0)
 
-	court.drawPlayers([player_one], ['w'])
+	if player_one.detectCourtCollision(court):
+		print "\nWALL COLLISION"
+		sys.exit()
+
+	court.drawPlayers([player_one], [player_one.getCharacter()])
+	
 	court.printCourt()
