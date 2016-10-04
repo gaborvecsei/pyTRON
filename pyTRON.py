@@ -123,19 +123,18 @@ class Player():
 		else:
 			newPosition = (lastPosition[0], lastPosition[1]+1)
 
-		if self.detectSelfCollision(newPosition) == True:
-			return False
-		else:
-			self.storePosition(newPosition)
-			return True
+		self.storePosition(newPosition)
+
 
 	# Detects if the player collided with itself
-	def detectSelfCollision(self, nextPosition):
-		if nextPosition in self.positions:
+	def detectSelfCollision(self):
+		lastPosition = self.positions[-1]
+		if lastPosition in self.positions[0:-1]:
 			return True
 		else:
 			return False
 
+	# Detect if we collided to the wall
 	def detectCourtCollision(self, court):
 		# (x,y)
 		lastPosition = self.positions[-1]
@@ -196,33 +195,14 @@ while True:
 		ControllPlayer(keyPressed, player_one, ('a', 'd', 'w', 's'))
 		ControllPlayer(keyPressed, player_two, ('j', 'l', 'i', 'k'))
 
-	####### Player One ########
-
-	# Move the player in the given direction
-	is_player_one_moved = player_one.moveOneStep()
-	# If we couldn't move our player than that's the end of the game
-	if is_player_one_moved == False:
-		print "\nSELF COLLISION"
-		sys.exit(0)
-
-	if player_one.detectCourtCollision(court):
-		print "\nWALL COLLISION"
-		sys.exit()
-
-
-	####### Player Two ########
-
-	is_player_two_moved = player_two.moveOneStep()
-
-	if is_player_two_moved == False:
-		print "\nSELF COLLISION"
-		sys.exit(0)
-
-	if player_two.detectCourtCollision(court):
-		print "\nWALL COLLISION"
-		sys.exit()
-
-
+	for player in [player_one, player_two]:
+		player.moveOneStep()
+		if player.detectSelfCollision() == True:
+			print "\nSELF COLLISION for player: " + player.getCharacter()
+			sys.exit(0)
+		if player.detectCourtCollision(court) == True:
+			print "\nWALL COLLISION for player: " + pilayer.getCharacter()
+			sys.exit(0)
 
 	# Show the court and players
 	court.drawPlayers([player_one, player_two])
