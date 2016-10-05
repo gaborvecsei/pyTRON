@@ -187,6 +187,7 @@ class Player():
 			self.changeDirection(1)
 		# UP
 		elif keyPressed != False and keyPressed.decode() == up and self.getcurrentDirection() != 3:
+			self.changeDirection(2)
 		# DOWN
 		elif keyPressed != False and keyPressed.decode() == down and self.getcurrentDirection() != 2:
 			self.changeDirection(3)
