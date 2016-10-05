@@ -187,32 +187,9 @@ class Player():
 			self.changeDirection(1)
 		# UP
 		elif keyPressed != False and keyPressed.decode() == up and self.getcurrentDirection() != 3:
-			self.changeDirection(2)
 		# DOWN
 		elif keyPressed != False and keyPressed.decode() == down and self.getcurrentDirection() != 2:
 			self.changeDirection(3)
-
-
-class GameThingsHolder():
-
-	def __init__(self, court = None, players = []):
-		self.court = court
-		self.players = players
-
-	def addNewPlayer(self, newPlayer):
-		self.players.append(newPlayer)
-
-	def addNewPlayers(self, newPlayersArray):
-		self.players = self.players + newPlayersArray
-
-	def getPlayers(self):
-		return self.players
-
-	def getCourt(self):
-		return self.court
-
-	def addCourt(self, court):
-		self.court = court
 
 
 # Clears the console's screen
