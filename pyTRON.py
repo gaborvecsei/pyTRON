@@ -79,6 +79,10 @@ class Court():
 	def getWidthHeight(self):
 		return (self.court_width, self.court_height)
 
+	def clearCourt(self):
+		self.court = []
+		self.build()
+
 
 
 # This is a class for the players
@@ -189,6 +193,28 @@ class Player():
 			self.changeDirection(3)
 
 
+class GameThingsHolder():
+
+	def __init__(self, court = None, players = []):
+		self.court = court
+		self.players = players
+
+	def addNewPlayer(self, newPlayer):
+		self.players.append(newPlayer)
+
+	def addNewPlayers(self, newPlayersArray):
+		self.players = self.players + newPlayersArray
+
+	def getPlayers(self):
+		return self.players
+
+	def getCourt(self):
+		return self.court
+
+	def addCourt(self, court):
+		self.court = court
+
+
 # Clears the console's screen
 def cls():
 	os.system('cls' if os.name=='nt' else 'clear')
@@ -204,7 +230,7 @@ def kbfunc():
 
 # Goes to the main menu if the user presses x
 def gotoMainMenu():
-	print 'Press (x) to go back to the main menu'
+	print '\nPress (x) to go back to the main menu'
 	pressedKey = raw_input('')
 	if pressedKey == 'x' or pressedKey == 'X':
 		cls()
@@ -263,9 +289,13 @@ def exit():
 	print "\nThank you for playing!\n"
 	sys.exit(0)
 
+
+# We can say that fps here is the speed of the game
+# newPlayers is a list. This contains newly added players from the settings, we concatenate this list with the existing one (players)
+# The higher the number the lower we wait in the while
 def gamePlayScreen(fps = 20):
 
-	# Build a court
+	# Create a new court
 	court = Court(100, 20)
 	
 	# Create a player
@@ -323,11 +353,10 @@ def gamePlayScreen(fps = 20):
 				gotoMainMenu()
 
 			# Show the court and players in the console
-			court.drawPlayers([player_one, player_two])
+			court.drawPlayers(players)
 			court.printCourt()
 
 
 ############ HERE STARTS THE GAME ################ 
-
 # Show the main screen
 mainScreen()
