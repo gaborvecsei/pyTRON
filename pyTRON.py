@@ -90,7 +90,7 @@ class Court():
 class Player():
 
 	# inputCharacters: you have to give in this order: (left, right, up, down)
-	# These are the characters you can controll your player
+	# These are the characters you can control your player
 	# playerCharacter: This is the character we will draw on the court to display the player
 	def __init__(self, startPosition, inputCharacters, currDir = 0, playerCharacter = 'o'):
 		self.currDir = currDir
@@ -271,7 +271,7 @@ def exit():
 # We can say that fps here is the speed of the game
 # newPlayers is a list. This contains newly added players from the settings, we concatenate this list with the existing one (players)
 # The higher the number the lower we wait in the while
-def gamePlayScreen(fps = 20):
+def gamePlayScreen(fps = 33):
 
 	# Create a new court
 	court = Court(100, 20)
@@ -319,7 +319,7 @@ def gamePlayScreen(fps = 20):
 	
 			# Copy the players array
 			otherPlayers = players[:]
-			# Remove the "active" player and check if the activa player collided it with someone
+			# Remove the "active" player and check if the active player collided it with someone
 			otherPlayers.remove(player)
 			isPlayerCollision, collisionPosition = player.detectPlayerCollision(otherPlayers)
 			if isPlayerCollision:
@@ -336,5 +336,6 @@ def gamePlayScreen(fps = 20):
 
 
 ############ HERE STARTS THE GAME ################ 
+
 # Show the main screen
 mainScreen()
