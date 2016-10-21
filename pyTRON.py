@@ -54,7 +54,7 @@ class Court():
 		screen = "\n".join(''.join(line) for line in self.court)
 		# Print the court
 		sys.stdout.write(screen)
-		sys.stdout.flush()
+		#sys.stdout.flush()
 
 	# Put a character somewhere in the court
 	def buildOnCourt(self, x, y, char):
@@ -237,6 +237,8 @@ def mainScreen():
 		helpScreen()
 	elif eval(selectedMenuPoint) == 4:
 		exit()
+	else:
+		mainScreen()
 
 def aboutScreen():
 	cls()
@@ -335,7 +337,7 @@ def gamePlayScreen(fps = 33):
 			court.printCourt()
 
 
-############ HERE STARTS THE GAME ################ 
+############ GAME STARTS HERE ################ 
 
 # Show the main screen
 mainScreen()
