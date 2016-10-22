@@ -21,7 +21,7 @@ The rules are simple, so enjoy it! :)
 
 ## Images
 
-<img  height=300 src="" />
+<img  height=400 src="https://github.com/gaborvecsei/pyTRON/blob/master/GamePlay.gif" />
 
 ## About
 
