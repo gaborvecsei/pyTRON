@@ -37,7 +37,7 @@ Vecsei Gábor
 
 
 [1]: http://gaborvecsei.wordpress.com
-[2]: www.linkedin.com/in/vecsei-gabor
+[2]: http://www.linkedin.com/in/vecsei-gabor
 [3]: https://github.com/gaborvecsei
 [4]: https://github.com/gaborvecsei/ConsoleTRON
 [5]: https://www.reddit.com/r/gamedev/comments/4oukiw/local_multiplayer_retro_tron_clone_on_the_console/
