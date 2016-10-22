@@ -24,7 +24,7 @@ class Court():
 		self.court_width = width
 		self.court_height = height
 		self.court = []
-		# Prepare court for usage
+		# Prepare court
 		self.build()
 
 	# Prepare the court (draw the edges etc...)
@@ -86,11 +86,10 @@ class Court():
 
 
 # This is a class for the players
-
 class Player():
 
 	# inputCharacters: you have to give in this order: (left, right, up, down)
-	# These are the characters you can control your player
+	# you can control the player with these characters
 	# playerCharacter: This is the character we will draw on the court to display the player
 	def __init__(self, startPosition, inputCharacters, currDir = 0, playerCharacter = 'o'):
 		self.currDir = currDir
@@ -262,6 +261,7 @@ def helpScreen():
 	print "Help menu, so you can play pyTRON\n"
 	print "Okay, okay...I will help you, just read this:"
 	print "Avoid collisions with the wall, other players and even with yourself."
+	print "Controls:\nplayer 1: W, A, S, D,\nplayer 2: I, J, K, L"
 	print "That's it...Start playing! :P"
 	gotoMainMenu()
 
@@ -273,7 +273,7 @@ def exit():
 # We can say that fps here is the speed of the game
 # newPlayers is a list. This contains newly added players from the settings, we concatenate this list with the existing one (players)
 # The higher the number the lower we wait in the while
-def gamePlayScreen(fps = 33):
+def gamePlayScreen(fps = 10):
 
 	# Create a new court
 	court = Court(100, 20)
@@ -310,14 +310,6 @@ def gamePlayScreen(fps = 33):
 
 			# Move the player
 			player.moveOneStep()
-
-			if player.detectSelfCollision() == True:
-				print "\nSELF COLLISION for player: " + player.getCharacter()
-				gotoMainMenu()
-	
-			if player.detectCourtCollision(court) == True:
-				print "\nWALL COLLISION for player: " + player.getCharacter()
-				gotoMainMenu()
 	
 			# Copy the players array
 			otherPlayers = players[:]
@@ -330,6 +322,14 @@ def gamePlayScreen(fps = 33):
 				# Draw the court one last time to show the collision
 				court.printCourt()
 				print "\nPlayers Collision for player: " + player.getCharacter()
+				gotoMainMenu()
+
+			if player.detectSelfCollision():
+				print "\nSELF COLLISION for player: " + player.getCharacter()
+				gotoMainMenu()
+	
+			if player.detectCourtCollision(court):
+				print "\nWALL COLLISION for player: " + player.getCharacter()
 				gotoMainMenu()
 
 			# Show the court and players in the console
