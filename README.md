@@ -2,7 +2,7 @@
 
 This is a simple local multiplayer TRON clone written in Python
 
-I made the same game in C what you can find [here][4] and it is called [Consoletron][4]. I wrote that code at the first semester at my University and unfortunately I used Hungarian words. I had a lot of request (you can see it [here on Reddit][5]) that I should rewrite it with English variable, function names and comments. So I thought I will rewrite it but to spice it up, I will use Python. This is not "just" a game what I made, this is a tutorial for beginner programmers to see, how awesome coding is!
+I made the same game in C what you can find [here][4] and it is called *[Consoletron][4]*. I wrote that code at the first semester at my University and unfortunately I used Hungarian words. I had a lot of request (you can see it [here on Reddit][5]) that I should rewrite it with English variable, function names and comments. So I thought I will rewrite it but to spice it up, I will use Python. This is not "just" a game what I made, this is a tutorial for beginner programmers to see, how awesome coding is!
 
 ## Controls
 
@@ -30,7 +30,9 @@ Vecsei Gábor
 <mailto:vecseigabor.x@gmail.com>
 
 [Personal Blog][1]
+
 [LinkedIn][2]
+
 [Github][3]
 
 
